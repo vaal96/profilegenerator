@@ -35,3 +35,4 @@ This Node Application displays a HTML file for a user based on their input.
 
 - [https://github.com/vaal96] Valeria Aguilar.
 
+Lincense: under MIT
