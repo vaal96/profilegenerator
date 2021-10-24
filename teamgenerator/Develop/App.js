@@ -1,27 +1,48 @@
-// -----------------part 2---------------------- // 
-//const Manager = require("./lib/Manager");
-//const Engineer = require("./lib/Engineer");
-//const Intern = require("./lib/Intern");
-//const Employee = require("./lib/Employee")
+
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const Employee = require("./lib/Employee")
 const inquirer = require('inquirer');
 const fs = require('fs');
-let allEmployees = []; 
 
-let finalTeam = []; 
-//const Engineers = [];
-// const Interns = [];
-
-// const teamMember = new (title)(name, id, email, github)
-// Employees.push(teamMember)
-// getNextType();
+const listOfManager = [];
+const listOfEngineers = [];
+const listOfInterns = [];
 
 // ----------- Ask all = init (: -----//
-function askAll() {
+function init(){
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "typeEmployee",
+            message: "What type of employee would you like to add?",
+            choices: ["Engineer", "Intern", "Manager"],   
+        }
+    ]).then(res => {
+        switch (res.typeEmployee){
+            case "Engineer":
+                askEngineersDetails();
+                break
+            case "Intern":
+                askInternsDetails();
+                break
+            case "Manager":
+                askManagerDetails();
+                break
+            default:
+                finalText();
+                break;
+        }  
+    })
+}
+function askManagerDetails() {
     return inquirer.prompt([
     { 
     type: "input",
     name: "name",
     message: "What is your managers name?",
+
     },
     { 
     type: "input",
@@ -40,9 +61,8 @@ function askAll() {
     },
     ])
     .then((answers) => {
-       answers = allEmployees; // double check this code
-       return getNextType();
-    });
+       
+    }).catch(err => console.log(err))
 };
 
 
@@ -129,98 +149,10 @@ function askInternsDetails() {
     })
 };
 
-// github: ${finalTeam[i].github}
-// school ${finalTeam[i].school}
-// ----------- render HTML: -----//
-// function finalText(){
-//     console.log("CONSOLE PLS SAY WE ARE DONE LOL ");
 
-//     const htmlArr = [];
 
-//    // for (let i = 1; < Employees.length; i++ ) { 
-//     let htmlObject = `</header>
-//     <div class="container employees">
-//         <div class="row mx-md-n5"">
-//             <div class="col px-md-5">
-//               <div class="card bg-light mb-3" style="max-width: 18rem;">
-//                 <div class="card-header text-white bg-primary mb-3">Header</div>
-//                 <div class="card-body">
-//                   <h5 class="card-title ">Primary card title</h5>
-//                   <ul class="list-group list-group-flush">
-//                     <li class="list-group-item">An item: ${finalTeam[i].name}</li>
-//                     <li class="list-group-item">A second item: ${finalTeam[i].id}</li>
-//                     <li class="list-group-item">A third item: ${finalTeam[i].email}</li>
-//                   </ul>
-//                 </div>
-//               </div>
-//             </div> 
-//             <div class="col px-md-5">
-//               <div class="card bg-light mb-3" style="max-width: 18rem;">
-//                 <div class="card-header text-white bg-primary mb-3">Header</div>
-//                 <div class="card-body">
-//                   <h5 class="card-title ">Primary card title</h5>
-//                   <ul class="list-group list-group-flush">
-//                     <li class="list-group-item">An item</li>
-//                     <li class="list-group-item">A second item</li>
-//                     <li class="list-group-item">A third item</li>
-//                   </ul>
-//                 </div>
-//               </div>
-//             </div>
-//             <div class="col px-md-5">
-//               <div class="card bg-light mb-3" style="max-width: 18rem;">
-//                 <div class="card-header text-white bg-primary mb-3">Header</div>
-//                 <div class="card-body">
-//                   <h5 class="card-title ">Primary card title</h5>
-//                   <ul class="list-group list-group-flush">
-//                     <li class="list-group-item">An item</li>
-//                     <li class="list-group-item">A second item</li>
-//                     <li class="list-group-item">A third item</li>
-//                   </ul>
-//                 </div>
-//               </div>
-//             </div>
-//         </div>
-//    <div class="row mx-md-n5"">
-//             <div class="col px-md-5">
-//               <div class="card bg-light mb-3" style="max-width: 18rem;">
-//                 <div class="card-header text-white bg-primary mb-3">Header</div>
-//                 <div class="card-body">
-//                   <h5 class="card-title ">Primary card title</h5>
-//                   <ul class="list-group list-group-flush">
-//                     <li class="list-group-item">An item</li>
-//                     <li class="list-group-item">A second item</li>
-//                     <li class="list-group-item">A third item</li>
-//                   </ul>
-//                 </div>
-//               </div>
-//             </div> 
-//             <div class="col px-md-5">
-//               <div class="card bg-light mb-3" style="max-width: 18rem;">
-//                 <div class="card-header text-white bg-primary mb-3">Header</div>
-//                 <div class="card-body">
-//                   <h5 class="card-title ">Primary card title</h5>
-//                   <ul class="list-group list-group-flush">
-//                     <li class="list-group-item">An item</li>
-//                     <li class="list-group-item">A second item</li>
-//                     <li class="list-group-item">A third item</li>
-//                   </ul>
-//                 </div>
-//               </div>
-//             </div>` 
-//     };
-// }
+init()
 
-askAll()
-
-        // pseudo code: -- example from office hours --- // 
-         /* function end() {
-            // TODO: render text
-            const text = "TODO: render html for listings";
-            // TODO: write text to file
-            // TODO: print don
-            return fs.writeFile("build/listings.html", text);
-          } */
 
           
-module.exports = App;          
+//module.exports = App;          
