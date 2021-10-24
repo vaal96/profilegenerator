@@ -5,6 +5,10 @@ const Intern = require("./lib/Intern");
 const Employee = require("./lib/Employee")
 const inquirer = require('inquirer');
 const fs = require('fs');
+const path = require('path');
+const OUTPUT_DIRECTORY = path.resolve(__dirname, "./dist");
+const OUTPUT_PATH = path.join(OUTPUT_DIRECTORY, "index.html");
+const render = require("./src/template")
 
 const listOfManager = [];
 const listOfEngineers = [];
@@ -17,7 +21,7 @@ function init(){
             type: "list",
             name: "typeEmployee",
             message: "What type of employee would you like to add?",
-            choices: ["Engineer", "Intern", "Manager"],   
+            choices: ["Engineer", "Intern", "Manager", "Exit"],   
         }
     ]).then(res => {
         switch (res.typeEmployee){
@@ -61,36 +65,15 @@ function askManagerDetails() {
     },
     ])
     .then((answers) => {
-       
+       listOfManager.push(new Manager(answers.name, answers.id, answers.email, answers.officeNumber))
+       init();
     }).catch(err => console.log(err))
 };
 
 
 // ----------- this function lets user add Employees or End: -----//
 
-function getNextType(){
-    inquirer.prompt([
-    { 
-            // loop this option
-    type: "list",
-    name: "addTeam",
-    message: "Add team members?",
-    choices: ["Engineer", "Intern", "Exit"],
-    },
-    ])
-    .then((answers) => {
-        switch (answers.addTeam){
-            case "Engineer":
-                return askEngineersDetails();
-            
-            case "Intern":
-                return askInternsDetails();
-            
-            default:
-                return finalText();
-        }   
-    })
-};
+
 
 
 
@@ -113,12 +96,16 @@ function askEngineersDetails() {
     name: "github",
     message: "What is your Github Username?",
     },
+    { 
+        type: "input",
+        name: "email",
+        message: "What is your email?",
+        },
     ])
     .then((answers) => {
-        Engineers.push(
-            new Engineers(answers.name, answers.id, answers.github));
-            return getNextType();
-    })
+        listOfEngineers.push(new Engineer(answers.name, answers.id, answers.email, answers.github))
+        init();
+     }).catch(err => console.log(err))
 };
 
 
@@ -141,15 +128,24 @@ function askInternsDetails() {
     name: "school",
     message: "What school are they enrolled in?",
     },
+    { 
+        type: "input",
+        name: "id",
+        message: "What is your ID?",
+        },
     ])
     .then((answers) => {
-        Interns.push(
-            new Interns(answers.name, answers.email, answers.school));
-            return getNextType();
-    })
+        listOfInterns.push(new Intern(answers.name, answers.id, answers.email, answers.school))
+        init();
+     }).catch(err => console.log(err))
 };
 
-
+function finalText(){
+    console.log(listOfInterns);
+    console.log(listOfManager);
+    console.log(listOfEngineers);
+    fs.writeFileSync(path.resolve(OUTPUT_PATH), render(listOfManager, listOfEngineers, listOfInterns))
+};
 
 init()
 
