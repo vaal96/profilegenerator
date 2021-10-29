@@ -70,13 +70,6 @@ function askManagerDetails() {
     }).catch(err => console.log(err))
 };
 
-
-// ----------- this function lets user add Employees or End: -----//
-
-
-
-
-
 // ----------- Engineers:-----//
 function askEngineersDetails() {
     inquirer.prompt([
